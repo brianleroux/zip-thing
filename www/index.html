@@ -10,11 +10,11 @@
 <script src=cordova.js></script>
 <script>
 var zipPath = window.location.toString().replace(/%20/g, '\ ').replace('file://', '').replace('index.html', 'hello.zip')
-  , folderPath = zipPath.replace('www/hello.zip', 'Library')
+  , folderPath = zipPath.replace('ZipForAEM.app/www/hello.zip', 'Library')
   
 document.addEventListener('deviceready', function() {
   zip.unzip(zipPath, folderPath, function(success) {
-    if (0) {
+    if (success === 0) {
         alert('seemed to work')
     }
     else {
