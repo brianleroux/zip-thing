@@ -1,1 +1,0 @@
-{"prepare_queue":{"installed":[],"uninstalled":[]},"config_munge":{"framework":{"libz.dylib":{"false":1}},"config.xml":{"/widget":{"<feature name=\"Zip\"><param name=\"ios-package\" value=\"Zip\" /></feature>":1}}},"installed_plugins":{"org.chromium.zip":{"PACKAGE_NAME":"io.brian.ZipForAEM"}},"dependent_plugins":{}}
