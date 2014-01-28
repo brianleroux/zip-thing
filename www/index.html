@@ -5,23 +5,72 @@
 <meta charset=utf-8>
 <meta name=format-detection content=telephone=no>
 <meta name=viewport content=user-scalable=no,initial-scale=1,width=device-width>
+<style>
+	#screenConsole>div {
+		border: 1px solid gray;
+	}
+	body.ios7 {
+		padding-top: 20px;
+	}
+</style>
 </head>
 <body>
-<script src=cordova.js></script>
-<script>
-var zipPath = window.location.toString().replace(/%20/g, '\ ').replace('file://', '').replace('index.html', 'hello.zip')
-  , folderPath = zipPath.replace('ZipForAEM.app/www/hello.zip', 'Library')
-  
-document.addEventListener('deviceready', function() {
-  zip.unzip(zipPath, folderPath, function(success) {
-    if (success === 0) {
-        alert('seemed to work')
-    }
-    else {
-        alert('darn it')
-    }
-  })
-})
-</script>
+	<div id="screenConsole">
+		<div><u>console</u></div>
+	</div>
+
+	<script src=cordova.js></script>
+	<script>
+		var zipRelativePath = 'zip/payload.1390921841595.zip';
+
+		var pagePath = window.location.href;
+		// Remove file:// protocol
+		pagePath = pagePath.replace('file://', '');
+		// Remove %20 whitespace
+		pagePath = pagePath.replace(/%20/g, '\ ');
+
+		var zipAbsPath = pagePath.substring(0, pagePath.lastIndexOf('/') + 1) + zipRelativePath;
+
+		// Feedback
+		var screenConsole = document.getElementById('screenConsole');
+		function printToScreen(message) {
+			screenConsole.innerHTML = screenConsole.innerHTML + '<div>' + message + '</div>';
+		}
+
+		// Device ready listener
+		document.addEventListener('deviceready', function() {
+			printToScreen('deviceready fired');
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+		});
+
+		// FS win
+		function gotFS(fileSystem) {
+			printToScreen('got FS');
+			var persistentStorageRootPath = fileSystem.root.fullPath;
+
+			printToScreen('unzip from: ' + zipAbsPath);
+			printToScreen('to: ' + persistentStorageRootPath);	
+
+			// UNZIP
+			zip.unzip(zipAbsPath, persistentStorageRootPath, function(success) {
+				if (success === 0) {
+					printToScreen('seemed to work');
+				}
+				else {
+					printToScreen('error: darn it');
+				}
+			});
+		}
+
+		// FS fail
+		function fail() {
+			printToScreen('error: failed to get filesystem');
+		}
+
+		// iOS 7 status bar shim
+		if(navigator.userAgent.match(/iPhone OS 7/)) {
+			document.body.className = document.body.className + ' ios7';
+		}
+	</script>
 </body>
 </html>
