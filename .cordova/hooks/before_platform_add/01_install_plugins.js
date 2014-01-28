@@ -7,7 +7,7 @@
 // or the URL
 var pluginlist = [
 	"org.apache.cordova.file",
-    "https://github.com/MobileChromeApps/zip.git"
+	"https://github.com/MobileChromeApps/zip.git"
 ];
  
 // no need to configure below
@@ -18,9 +18,9 @@ var sys = require('sys')
 var exec = require('child_process').exec;
  
 function puts(error, stdout, stderr) {
-    sys.puts(stdout)
+	sys.puts(stdout)
 }
  
 pluginlist.forEach(function(plug) {
-    exec("phonegap local plugin add " + plug, puts);
+	exec("phonegap local plugin add " + plug, puts);
 });
